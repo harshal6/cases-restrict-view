@@ -182,18 +182,8 @@ function cases_restrict_view_civicrm_pageRun( &$page )
     $client_ids = [1,7654,5,2];
     if (in_array($contact_id, $client_ids) ) {
       //show message
-      if (class_exists('Drupal')) {
-        $roles = \Drupal::currentUser()->getAccount()->getRoles();
-        if (in_array('administrator',$roles)) {
-          return;
-        }
-      }
-      if (function_exists('wp_get_current_user')) {
-        $user = wp_get_current_user();
-        $allowed_roles = array( 'administrator');
-        if (in_array('administrator', $user->roles)) {
-          return;
-        }
+      if (CRM_Core_Permission::check('administer CiviCRM')) {
+        return;
       }
       CRM_Core_Session::setStatus(ts('You do not have permission to access this page.'));
       //redirect to dashboard
